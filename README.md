@@ -1,5 +1,7 @@
 ### Chat Application
 
+[![Build Status](https://travis-ci.com/yatharth1706/chat-app-nodejs.svg?branch=master)](https://travis-ci.com/yatharth1706/chat-app-nodejs)
+
 #### Tech Stack
 
 * [x] Nodejs
