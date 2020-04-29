@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
         count++;
 
         io.emit('countUpdated', count);
-    })
+    });
 });
 
 
