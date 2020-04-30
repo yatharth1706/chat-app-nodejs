@@ -10,5 +10,5 @@
 * [x] Nodemon
 * [x] jshint (Error linter)
 
-#### What is Web Sockets ?
+
 
