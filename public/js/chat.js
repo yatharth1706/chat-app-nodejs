@@ -11,7 +11,13 @@ var form = document.getElementById('myForm');
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     var msg = document.getElementById('message').value;
-    socket.emit('sendMessage', msg);
+    socket.emit('sendMessage', msg, (error,message) => {
+        if(error){
+            return console.log(error);
+        }
+
+        console.log(message);
+    });
 })
 
 
