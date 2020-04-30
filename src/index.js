@@ -29,8 +29,9 @@ io.on('connection', (socket) => {
         callback(null, "Delivered to everyone!!");
     });
 
-    socket.on('sendLocation', (location) => {
+    socket.on('sendLocation', (location, callback) => {
         socket.broadcast.emit("message", `https://google.com/maps?q=${location.latitude},${location.longitude}`);
+        callback("Location shared");
     });
 
     // when user disconnects

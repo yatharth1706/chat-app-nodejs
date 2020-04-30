@@ -36,6 +36,8 @@ document.getElementById("send-location").addEventListener('click',()=>{
         socket.emit('sendLocation', {
             "latitude": position.coords.latitude,
             "longitude": position.coords.longitude
+        }, (message) => {
+            console.log(message);
         })
     })
 })
