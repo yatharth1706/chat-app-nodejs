@@ -1,12 +1,20 @@
 const socket = io();
 
-socket.on('countUpdated', (count) => {
-    console.log("Count updated has been sent!! ", count)
+// add event listener to button to send message to server
+
+var form = document.getElementById('myForm');
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    var msg = document.getElementById('message').value;
+    socket.emit('message', msg);
 })
 
-document.querySelector('#increment').addEventListener('click',()=>{
-    console.log("clicked")
-
-    socket.emit('increment')
+socket.on('message', (msg) => {
+    console.log(msg);
 })
+
+
+
+
 
