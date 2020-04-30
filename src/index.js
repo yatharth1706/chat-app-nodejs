@@ -23,11 +23,17 @@ io.on('connection', (socket) => {
         io.emit('message', msg);
     });
 
+    socket.on('sendLocation', (location) => {
+        socket.broadcast.emit("message", location);
+    })
+
     // when user disconnects
 
     socket.on('disconnect', () => {
         io.emit("message", "A user has left!");
     });
+
+    
 });
 
 

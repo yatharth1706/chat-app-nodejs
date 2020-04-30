@@ -25,6 +25,12 @@ document.getElementById("send-location").addEventListener('click',()=>{
     // get the location of user
     navigator.geolocation.getCurrentPosition((position) => {
         console.log(position);
+        
+        // send location to server
+        socket.emit('sendLocation', {
+            "latitude": position.coords.latitude,
+            "longitude": position.coords.longitude
+        })
     })
 })
 
