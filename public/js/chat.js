@@ -1,6 +1,7 @@
 const socket = io();
 const $messageDiv = document.querySelector("#messages"); 
 const messageTemplate = document.querySelector("#message-template").innerHTML;
+const locationTemplate = document.querySelector("#location-template").innerHTML;
 
 socket.on('message', (msg) => {
     console.log(msg);
@@ -52,3 +53,12 @@ document.getElementById("send-location").addEventListener('click',()=>{
     })
 })
 
+socket.on("locationMessage", (url) => {
+    
+    // render this in a new template
+    const locationHTML = Mustache.render(locationTemplate,{
+        url
+    });
+    $messageDiv.insertAdjacentHTML("beforeend",locationHTML);
+
+})
