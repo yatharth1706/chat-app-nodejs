@@ -9,7 +9,7 @@ socket.on('message', (msg) => {
     // render the message template in web page
     const $html = Mustache.render(messageTemplate, {
         message : msg.text,
-        createdAt : msg.createdAt
+        createdAt : moment(msg.createdAt).format("h:mm a")
     });
     console.log(typeof($html));
     $messageDiv.insertAdjacentHTML("beforeend",$html);
