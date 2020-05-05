@@ -5,6 +5,7 @@ const app = express();
 const socketio = require('socket.io');
 const server = http.createServer(app);
 const Filter = require('bad-words');
+const { generateMessage } = require('./utils/messages');
 
 const port = process.env.PORT || 3000;
 const io = socketio(server);
@@ -15,8 +16,8 @@ app.use(express.static(publicDirectoryPath));
 let count = 0;
 io.on('connection', (socket) => {
     console.log("New Web socket connection!!");
-    socket.emit('message', "Welcome!!");
-    socket.broadcast.emit('message',"A new user has joined!");
+    socket.emit('message', generateMessage("Welcome!"));
+    socket.broadcast.emit('message',generateMessage("A new user has joined!"));
 
     socket.on('sendMessage', (msg, callback) => {
         // before emitting the message validate the message
@@ -25,19 +26,19 @@ io.on('connection', (socket) => {
             return callback("Profanity is not allowed!!");
         }
         
-        io.emit('message', msg);
+        io.emit('message', generateMessage(msg));
         callback(null, "Delivered to everyone!!");
     });
 
     socket.on('sendLocation', (location, callback) => {
-        io.emit("locationMessage", `https://google.com/maps?q=${location.latitude},${location.longitude}`);
+        io.emit("locationMessage", generateMessage(`https://google.com/maps?q=${location.latitude},${location.longitude}`));
         callback("Location shared");
     });
 
     // when user disconnects
 
     socket.on('disconnect', () => {
-        io.emit("message", "A user has left!");
+        io.emit("message", generateMessage("A user has left!"));
     });
 
     

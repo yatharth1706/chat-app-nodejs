@@ -8,7 +8,8 @@ socket.on('message', (msg) => {
 
     // render the message template in web page
     const $html = Mustache.render(messageTemplate, {
-        message : msg
+        message : msg.text,
+        createdAt : msg.createdAt
     });
     console.log(typeof($html));
     $messageDiv.insertAdjacentHTML("beforeend",$html);
