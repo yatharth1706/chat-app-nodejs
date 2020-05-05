@@ -1,7 +1,17 @@
 const socket = io();
+const $messageDiv = document.querySelector("#messages"); 
+const messageTemplate = document.querySelector("#message-template").innerHTML;
 
 socket.on('message', (msg) => {
     console.log(msg);
+
+    // render the message template in web page
+    const $html = Mustache.render(messageTemplate, {
+        message : msg
+    });
+    console.log(typeof($html));
+    $messageDiv.insertAdjacentHTML("beforeend",$html);
+    
 })
 
 // add event listener to button to send message to server
