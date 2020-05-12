@@ -35,6 +35,18 @@ const addUser = ({id, username, room}) => {
 
 }
 
+const removeUser = (id) => {
+    const index = users.findIndex((user) => {
+        return user.id === id;
+    })
+
+    if(index!=-1){
+        return users.splice(index,1);
+    }
+
+}
+
+
 addUser({
     id: 23,
     username : "   Yash   ",
@@ -45,9 +57,12 @@ console.log(users);
 
 const res = addUser({
     id: 35,
-    username: 'Yash',
+    username: 'Yassh',
     room: 'Professionals'
 })
 
 console.log(res)
 
+const removed = removeUser(35);
+console.log(removed);
+console.log(users);
