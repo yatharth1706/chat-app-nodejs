@@ -3,6 +3,12 @@ const $messageDiv = document.querySelector("#messages");
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML;
 
+// for parsing the query strign
+const { username,room } = Qs.parse(location.search,{
+    ignoreQueryPrefix: true
+})
+
+
 socket.on('message', (msg) => {
     console.log(msg);
 
@@ -64,3 +70,6 @@ socket.on("locationMessage", (url) => {
     $messageDiv.insertAdjacentHTML("beforeend",locationHTML);
 
 })
+
+
+socket.emit('join', { username, room })

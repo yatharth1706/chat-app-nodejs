@@ -16,8 +16,15 @@ app.use(express.static(publicDirectoryPath));
 let count = 0;
 io.on('connection', (socket) => {
     console.log("New Web socket connection!!");
-    socket.emit('message', generateMessage("Welcome!"));
-    socket.broadcast.emit('message',generateMessage("A new user has joined!"));
+
+    socket.on("join", ({username, room})=>{
+        socket.join(room);
+
+        // io.to.emit for sending message to specific room
+        // socket.broadcast.to.emit for sending message to specific room except username
+        socket.emit('message', generateMessage("Welcome!"));
+        socket.broadcast.to(room).emit('message',generateMessage(`${username} has joined`));
+    })
 
     socket.on('sendMessage', (msg, callback) => {
         // before emitting the message validate the message
@@ -34,6 +41,8 @@ io.on('connection', (socket) => {
         io.emit("locationMessage", generateMessage(`https://google.com/maps?q=${location.latitude},${location.longitude}`));
         callback("Location shared");
     });
+
+
 
     // when user disconnects
 
