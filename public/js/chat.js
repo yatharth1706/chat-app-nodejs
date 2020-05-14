@@ -14,6 +14,7 @@ socket.on('message', (msg) => {
 
     // render the message template in web page
     const $html = Mustache.render(messageTemplate, {
+        username: msg.username,
         message : msg.text,
         createdAt : moment(msg.createdAt).format("h:mm a")
     });
@@ -60,12 +61,13 @@ document.getElementById("send-location").addEventListener('click',()=>{
     })
 })
 
-socket.on("locationMessage", (url) => {
+socket.on("locationMessage", (message) => {
     
     // render this in a new template
     const locationHTML = Mustache.render(locationTemplate,{
-        url : url.text,
-        createdAt : moment(url.createdAt).format("h:mm a")
+        username: message.username,
+        url : message.text,
+        createdAt : moment(message.createdAt).format("h:mm a")
     });
     $messageDiv.insertAdjacentHTML("beforeend",locationHTML);
 

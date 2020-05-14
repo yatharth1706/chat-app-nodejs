@@ -31,7 +31,7 @@ io.on('connection', (socket) => {
 
         // io.to.emit for sending message to specific room
         // socket.broadcast.to.emit for sending message to specific room except username
-        socket.emit('message', generateMessage("Welcome!"));
+        socket.emit('message', generateMessage(user.username,"Welcome!"));
         socket.broadcast.to(user.room).emit('message',generateMessage(`${user.username} has joined`));
         
         callback();
@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
         const user = getUser(socket.id);
 
         if(user){
-            io.to(user.room).emit('message', generateMessage(msg));
+            io.to(user.room).emit('message', generateMessage(user.username,msg));
             callback(null, "Delivered to everyone!!");
         }
         
@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
         const user = getUser(socket.id);
 
         if(user){
-            io.to(user.room).emit("locationMessage", generateMessage(`https://google.com/maps?q=${location.latitude},${location.longitude}`));
+            io.to(user.room).emit("locationMessage", generateMessage(user.username,`https://google.com/maps?q=${location.latitude},${location.longitude}`));
             callback("Location shared");
         }
         
