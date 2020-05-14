@@ -44,13 +44,24 @@ io.on('connection', (socket) => {
             return callback("Profanity is not allowed!!");
         }
         
-        io.emit('message', generateMessage(msg));
-        callback(null, "Delivered to everyone!!");
+        // get user room
+        const user = getUser(socket.id);
+
+        if(user){
+            io.to(user.room).emit('message', generateMessage(msg));
+            callback(null, "Delivered to everyone!!");
+        }
+        
     });
 
     socket.on('sendLocation', (location, callback) => {
-        io.emit("locationMessage", generateMessage(`https://google.com/maps?q=${location.latitude},${location.longitude}`));
-        callback("Location shared");
+        const user = getUser(socket.id);
+
+        if(user){
+            io.to(user.room).emit("locationMessage", generateMessage(`https://google.com/maps?q=${location.latitude},${location.longitude}`));
+            callback("Location shared");
+        }
+        
     });
 
 
@@ -59,7 +70,6 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         const user = removeUser(socket.id);
-        console.log(user.username);
 
         if(user){
             io.to(user.room).emit("message", generateMessage(`${user.username} has left!`));
