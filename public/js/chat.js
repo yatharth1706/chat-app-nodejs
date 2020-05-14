@@ -2,6 +2,7 @@ const socket = io();
 const $messageDiv = document.querySelector("#messages"); 
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML;
+const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 
 // for parsing the query strign
 const { username,room } = Qs.parse(location.search,{
@@ -73,6 +74,14 @@ socket.on("locationMessage", (message) => {
 
 })
 
+socket.on('roomData', ({room, users}) => {
+    const html = Mustache.render(sidebarTemplate,{
+        room,
+        users
+    })
+
+    document.querySelector("#sidebar").innerHTML = html;
+})
 
 socket.emit('join', { username, room }, (error) =>{
     if(error) {
