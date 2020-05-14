@@ -40,27 +40,19 @@ const removeUser = (id) => {
         return user.id === id;
     })
 
-    if(index!=-1){
-        return users.splice(index,1);
+    if(index!==-1){
+        return users.splice(index,1)[0];
     }
 
 }
 
 
 const getUser = (id) => {
-    const res = users.filter((user) => {
-        return user.id === id;
-    })
-
-    return res;
+    return users.find((user) => user.id === id);
 }
 
 const getUsersInRoom = (room) => {
-    const res = users.filter((user) => {
-        return user.room === room;
-    })
-
-    return res;
+    return users.filter((user) => user.room === room);
 }
 
 module.exports = {

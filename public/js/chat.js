@@ -72,4 +72,11 @@ socket.on("locationMessage", (url) => {
 })
 
 
-socket.emit('join', { username, room })
+socket.emit('join', { username, room }, (error) =>{
+    if(error) {
+        alert(error);
+        // redirect to home page
+        location.href = "/";
+    }
+
+})

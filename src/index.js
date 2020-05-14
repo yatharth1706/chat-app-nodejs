@@ -6,6 +6,8 @@ const socketio = require('socket.io');
 const server = http.createServer(app);
 const Filter = require('bad-words');
 const { generateMessage } = require('./utils/messages');
+const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users');
+
 
 const port = process.env.PORT || 3000;
 const io = socketio(server);
@@ -17,14 +19,23 @@ let count = 0;
 io.on('connection', (socket) => {
     console.log("New Web socket connection!!");
 
-    socket.on("join", ({username, room})=>{
-        socket.join(room);
+    socket.on("join", (options, callback)=>{
+        const {error, user} = addUser({ id: socket.id, ...options });
+        
+        if(error){
+            return callback(error);
+        }
+
+
+        socket.join(user.room);
 
         // io.to.emit for sending message to specific room
         // socket.broadcast.to.emit for sending message to specific room except username
         socket.emit('message', generateMessage("Welcome!"));
-        socket.broadcast.to(room).emit('message',generateMessage(`${username} has joined`));
-    })
+        socket.broadcast.to(user.room).emit('message',generateMessage(`${user.username} has joined`));
+        
+        callback();
+    });
 
     socket.on('sendMessage', (msg, callback) => {
         // before emitting the message validate the message
@@ -47,7 +58,13 @@ io.on('connection', (socket) => {
     // when user disconnects
 
     socket.on('disconnect', () => {
-        io.emit("message", generateMessage("A user has left!"));
+        const user = removeUser(socket.id);
+        console.log(user.username);
+
+        if(user){
+            io.to(user.room).emit("message", generateMessage(`${user.username} has left!`));
+        }
+
     });
 
     
