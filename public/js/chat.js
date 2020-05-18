@@ -9,6 +9,32 @@ const { username,room } = Qs.parse(location.search,{
     ignoreQueryPrefix: true
 })
 
+const autoScroll = () => {
+    // new message element
+    const $newMessage = $messageDiv.lastElementChild;
+
+    // height of new message
+    const newMessageStyles = getComputedStyle($newMessage);
+    const newMessageMargin = parseInt(newMessageStyles.marginBottom);
+    const newMessageHeight = $newMessage.offsetHeight + newMessageMargin;
+
+    // visible height
+    const visibleHeight = $messageDiv.offsetHeight;
+
+    // total height of container of messages when messages are more
+    const containerHeight = $messageDiv.scrollHeight; // total height we are able to 
+    // scroll through
+
+    // how far i have scrolled
+
+    const scrollOffset = $messageDiv.scrollTop + visibleHeight;
+
+    if (containerHeight - newMessageHeight <= scrollOffset) {
+        $messageDiv.scrollTop = $messageDiv.scrollHeight; 
+    }
+
+}   
+
 
 socket.on('message', (msg) => {
     console.log(msg);
@@ -21,7 +47,7 @@ socket.on('message', (msg) => {
     });
     console.log(typeof($html));
     $messageDiv.insertAdjacentHTML("beforeend",$html);
-    
+    autoScroll();
 })
 
 // add event listener to button to send message to server
